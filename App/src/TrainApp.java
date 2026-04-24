@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class TrainApp {
 
     public static void main(String[] args) {
@@ -7,44 +5,34 @@ public class TrainApp {
         String[] bogieIds = {
                 "BG101",
                 "BG205",
-                "BG309",
-                "BG412",
-                "BG550"
+                "BG309"
         };
 
-        String searchKey = "BG309";
+        String searchKey = "BG205";
 
-        boolean found = binarySearch(bogieIds, searchKey);
+        try {
+            boolean found = searchBogie(bogieIds, searchKey);
 
-        if (found) {
-            System.out.println("Bogie ID " + searchKey + " found.");
-        } else {
-            System.out.println("Bogie ID " + searchKey + " not found.");
+            if (found) {
+                System.out.println("Bogie ID " + searchKey + " found.");
+            } else {
+                System.out.println("Bogie ID " + searchKey + " not found.");
+            }
+
+        } catch (IllegalStateException e) {
+            System.out.println(e.getMessage());
         }
     }
 
-    public static boolean binarySearch(String[] arr, String key) {
+    public static boolean searchBogie(String[] bogieIds, String searchKey) {
 
-        if (arr.length == 0) return false;
+        if (bogieIds.length == 0) {
+            throw new IllegalStateException("Search operation failed: No bogies available in the train.");
+        }
 
-        // Ensure array is sorted
-        Arrays.sort(arr);
-
-        int low = 0;
-        int high = arr.length - 1;
-
-        while (low <= high) {
-
-            int mid = (low + high) / 2;
-
-            int cmp = key.compareTo(arr[mid]);
-
-            if (cmp == 0) {
+        for (String id : bogieIds) {
+            if (id.equals(searchKey)) {
                 return true;
-            } else if (cmp < 0) {
-                high = mid - 1;
-            } else {
-                low = mid + 1;
             }
         }
 
