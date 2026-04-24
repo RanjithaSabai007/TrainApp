@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class TrainApp {
 
     public static void main(String[] args) {
@@ -12,7 +14,7 @@ public class TrainApp {
 
         String searchKey = "BG309";
 
-        boolean found = linearSearch(bogieIds, searchKey);
+        boolean found = binarySearch(bogieIds, searchKey);
 
         if (found) {
             System.out.println("Bogie ID " + searchKey + " found.");
@@ -21,12 +23,31 @@ public class TrainApp {
         }
     }
 
-    public static boolean linearSearch(String[] arr, String key) {
-        for (String id : arr) {
-            if (id.equals(key)) {
-                return true; // early termination
+    public static boolean binarySearch(String[] arr, String key) {
+
+        if (arr.length == 0) return false;
+
+        // Ensure array is sorted
+        Arrays.sort(arr);
+
+        int low = 0;
+        int high = arr.length - 1;
+
+        while (low <= high) {
+
+            int mid = (low + high) / 2;
+
+            int cmp = key.compareTo(arr[mid]);
+
+            if (cmp == 0) {
+                return true;
+            } else if (cmp < 0) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
             }
         }
+
         return false;
     }
 }
